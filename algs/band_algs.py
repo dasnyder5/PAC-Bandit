@@ -141,3 +141,54 @@ class KLUCB(FBandAlg):
                     self.q_tmp = self.rhat + 0.5*(np.ones(self.k)-self.rhat)
         
         return True
+    
+class pacUCB(FBandAlg): 
+    
+    def __init__(self, k, T=1000, c=1, pr=None): 
+        super().__init__(k, T)
+
+        self.c = c
+        if pr is None:
+            self.pr = (1./k)*np.ones(k)
+        else: 
+            if (np.sum(pr) != 1 or np.min(pr) < 0):
+                raise ValueError('Invalid pmf')
+            self.pr = pr
+
+        self.q_tmp = np.ones(self.k)
+        self.useQFlag = False
+        
+    # def make_bonus(self): 
+    #     self.bonus = self.c * np.sqrt(self.iota/self.n)
+        
+    def choose_arm(self, t): 
+        if t < self.k: 
+            a = int(t)
+        else: 
+            if self.useQFlag: 
+                a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c, q=self.q_tmp) #, plotFlag=True)
+            else: 
+                a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c) #, plotFlag=True)
+
+            self.q_tmp = q_tmp
+        return a
+
+    def update(self, a, t, reward_t): 
+        
+        if t%10 == 0: 
+            print('Current time iteration: ', t)
+        self.t = t
+        
+        self.n[a] = self.n[a] + 1
+        
+        self.R[a] = self.R[a] + reward_t
+        self.Rcum = self.Rcum + reward_t
+
+        if t >= self.k: 
+            self.rhat = self.R/self.n
+            if np.max(self.rhat < 1): 
+                self.useQFlag = True
+                if np.max(self.q_tmp) >= 1: 
+                    self.q_tmp = self.rhat + 0.5*(np.ones(self.k)-self.rhat)
+        
+        return True
