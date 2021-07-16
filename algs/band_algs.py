@@ -6,7 +6,7 @@ Created on Thu Jul  1 14:08:52 2021
 @author: dasnyder
 """
 import numpy as np
-from algs.utils import KL, KLUCB_Newton
+from algs.band_utils import KL, KLUCB_Newton, pacOPT
 
 class BandAlg: 
     
@@ -114,7 +114,7 @@ class KLUCB(FBandAlg):
         if t < self.k: 
             a = int(t)
         else: 
-            if self.useQFlag: 
+            if 0: # self.useQFlag: 
                 a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c, q=self.q_tmp) #, plotFlag=True)
             else: 
                 a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c) #, plotFlag=True)
@@ -124,8 +124,8 @@ class KLUCB(FBandAlg):
 
     def update(self, a, t, reward_t): 
         
-        if t%10 == 0: 
-            print('Current time iteration: ', t)
+        #if t%10 == 0: 
+        #    print('Current time iteration: ', t)
         self.t = t
         
         self.n[a] = self.n[a] + 1
@@ -141,10 +141,11 @@ class KLUCB(FBandAlg):
                     self.q_tmp = self.rhat + 0.5*(np.ones(self.k)-self.rhat)
         
         return True
-    
+
+
 class pacUCB(FBandAlg): 
     
-    def __init__(self, k, T=1000, c=1, pr=None): 
+    def __init__(self, k, T=1000, c=1, delta=0.001, pr=None): 
         super().__init__(k, T)
 
         self.c = c
@@ -155,6 +156,7 @@ class pacUCB(FBandAlg):
                 raise ValueError('Invalid pmf')
             self.pr = pr
 
+        self.d = delta
         self.q_tmp = np.ones(self.k)
         self.useQFlag = False
         
@@ -164,19 +166,26 @@ class pacUCB(FBandAlg):
     def choose_arm(self, t): 
         if t < self.k: 
             a = int(t)
-        else: 
-            if self.useQFlag: 
-                a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c, q=self.q_tmp) #, plotFlag=True)
-            else: 
-                a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c) #, plotFlag=True)
+        else:
+            #if self.useQFlag: 
+            #    a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c, q=self.q_tmp) #, plotFlag=True)
+            #else: 
+            #    a, q_tmp, oneFlag = KLUCB_Newton(self.n, self.rhat, t, c=self.c) #, plotFlag=True)
+            #
+            #self.q_tmp = q_tmp
+            alpha = pacOPT(self.n, self.rhat, t, self.k, self.d)
+            a_cum = np.cumsum(alpha)
+            a_rand = np.random.rand(1)
+            a = 0
+            while a_cum[a] <= a_rand:
+                a += 1
 
-            self.q_tmp = q_tmp
-        return a
+        return int(a)
 
     def update(self, a, t, reward_t): 
         
-        if t%10 == 0: 
-            print('Current time iteration: ', t)
+        #if t%10 == 0: 
+        #    print('Current time iteration: ', t)
         self.t = t
         
         self.n[a] = self.n[a] + 1
@@ -188,7 +197,7 @@ class pacUCB(FBandAlg):
             self.rhat = self.R/self.n
             if np.max(self.rhat < 1): 
                 self.useQFlag = True
-                if np.max(self.q_tmp) >= 1: 
+                if np.max(self.q_tmp) >= 1:
                     self.q_tmp = self.rhat + 0.5*(np.ones(self.k)-self.rhat)
-        
+
         return True
