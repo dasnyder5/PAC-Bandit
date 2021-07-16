@@ -6,7 +6,7 @@ Created on Thu Jul  1 14:08:52 2021
 @author: dasnyder
 """
 import numpy as np
-from algs.band_utils import KL, KLUCB_Newton, pacOPT
+from algs.band_utils import KLUCB_Newton, pacOPT
 
 class BandAlg: 
     
@@ -153,7 +153,7 @@ class pacUCB(FBandAlg):
             self.pr = (1./k)*np.ones(k)
         else: 
             if (np.sum(pr) != 1 or np.min(pr) < 0):
-                raise ValueError('Invalid pmf')
+                raise ValueError('Invalid prior pmf')
             self.pr = pr
 
         self.d = delta

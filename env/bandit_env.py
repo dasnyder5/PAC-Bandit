@@ -58,25 +58,29 @@ class FiniteBandit(Bandit):
 
 class SFBandit(FiniteBandit): 
     
-    def __init__(self, k, T=1000, r=None, dist='Bernoulli', seed=None, printFlag=False): 
+    def __init__(self, k, T=1000, r=None, dist='Bernoulli', seed=None, repeatable=True, printFlag=False): 
         super().__init__(k, T)
         
         self.rt = np.zeros((k, T))
         
         # Assign repeatable but random reward means based on r and seed: 
-        if r is not None: 
+        if r is not None: # Assign the user-given rewards + check for issues
             self.r = r
             if (np.max(r) > 1 or np.min(r) < 0): 
                 raise ValueError('Invalid Reward - Outside [0, 1] Bounds')
             if (len(r) != k): 
                 raise ValueError('Reward vector length does not match' +
                                  ' the number of arms')
-        else: 
-            if seed is not None: 
+        else:  # Assign random rewards
+            if seed is not None: # Use user-given seed
                 np.random.seed(seed)
                 self.r = np.random.rand(k)
-            else:
-                np.random.seed(123456)
+            else: 
+                if repeatable:
+                    np.random.seed(123456)
+                else: 
+                    np.random.seed()
+
                 self.r = 0.5 + 0.5*np.random.rand(k)
         
         # Store the distribution type
@@ -138,12 +142,24 @@ class AFBandit(FiniteBandit):
 class InfBandit(Bandit): 
     
     def __init__(self, T=1000, r=None): 
+        super().__init__(T)
+        
+        # Public Information for the Player
+        self.k = k                  # Number of arms (finite!)
+        self.t = int(0)             # Current timestep (reset to 0 in init)
+        self.n = np.zeros(k)        # Number of pulls of each arm
+        self.R = np.zeros(k)        # Cumulative reward of each arm 
+        self.rhat = np.zeros(k)     # Empirical mean reward for each arm
+        self.Rcum = 0               # Cumulative observed reward
+        
+        # Private Information Unobservable By the Player
+        self.Rhind = np.zeros((k, self.T)) # Cumulative reward for each arm (unobserved)
         return
 
     def step(self, a): 
         raise NotImplementedError()
     
-    def assign_rewards(self):
+    def generate_reward(self):
         raise NotImplementedError()
 
 
