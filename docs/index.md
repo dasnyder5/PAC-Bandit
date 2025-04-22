@@ -23,6 +23,10 @@ img: assets/img/policy_synthesis.png
         <td style="text-align: center; width: 100px;">
             <span style="font-size: 16px; font-weight:bold;"><a href="" target="_blank">Patrick Miller</a></span>
         </td>
+    </tr>
+</table>
+<br>
+<table style="width: 80%; max-width: 800px; margin: 0 auto;">
         <td style="text-align: center; width: 100px;">
             <span style="font-size: 16px; font-weight:bold;"><a href="https://www.tri.global/about-us/dr-rares-ambrus" target="_blank">Rares Andrei Ambrus</a></span>
         </td>
@@ -37,6 +41,7 @@ img: assets/img/policy_synthesis.png
         </td>
     </tr>
 </table>
+<br>
 <table style="width: 60%; max-width: 800px; margin: 0 auto;">
     <tr>
         <td align=center width=40px><center><span style="font-size:28px">
