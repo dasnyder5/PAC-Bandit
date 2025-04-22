@@ -52,3 +52,7 @@ img: assets/img/policy_synthesis.png
         </td>
     </tr>
 </table>
+<br>
+<br>
+<h3><center><span style="font-weight:bold;">TL;DR:</span> </center></h3>
+<span style="font-size: 16px; font-weight:bold;">We present a method for rigorous two-policy evaluation which ensures statistical correctness at tunable error risks while near-optimally minimizing the expected number of trials to reach a decision. This method uses an optimization-based approach to efficiently solve the approximate near-optimal stopping PDE at the exact resolution demanded by the evaluation context. This is especially attuned to the low-sample regime that characterizes current robotic evaluation paradigms.</span>
