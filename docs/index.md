@@ -36,6 +36,8 @@ img: assets/img/policy_synthesis.png
             <span style="font-size: 16px; font-weight:bold;"><a href="https://harukins.github.io/" target="_blank">Haruki Nishimura</a></span>
         </td>
     </tr>
+</table>
+<table style="width: 60%; max-width: 800px; margin: 0 auto;">
     <tr>
         <td align=center width=40px><center><span style="font-size:28px">
             <a href="https://irom-lab.princeton.edu/">
