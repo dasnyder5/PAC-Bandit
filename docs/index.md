@@ -4,7 +4,7 @@ title: STEP
 description: Near-Optimal Sequential Testing for Efficient Policy Comparison
 img: assets/img/policy_synthesis.png
 ---
-<h1><center><span style="font-weight:bold;">STEP:</span>Sequential Testing for Efficient Policy Comparison for Robotics</center></h1>
+<h1><center><span style="font-weight:bold;">STEP:</span> Sequential Testing for Efficient Policy Comparison </center></h1>
 <br>
 <table style="width: 80%; max-width: 800px; margin: 0 auto;">
     <tr>
