@@ -36,4 +36,14 @@ img: assets/img/policy_synthesis.png
             <span style="font-size: 16px; font-weight:bold;"><a href="https://harukins.github.io/" target="_blank">Haruki Nishimura</a></span>
         </td>
     </tr>
+    <tr>
+        <td align=center width=40px><center><span style="font-size:28px">
+            <a href="https://irom-lab.princeton.edu/">
+                <img src="assets/img/irom_lab_logo.png" alt="IRoM Lab" style="width: 80%;">
+            </a></span></center>
+        </td>
+        <td align=center width=40px><center><span style="font-size:28px">
+            <a href="https://www.tri.global/our-work/large-behavior-models" target="_blank"><img src="assets/img/TRI_logo.png" alt="Toyota Research Institute" style="width: 30%;"></a></span></center>
+        </td>
+    </tr>
 </table>
